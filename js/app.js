@@ -11,6 +11,8 @@ const cityInput = document.querySelector("#city-input");
 const searchMessage = document.querySelector("#search-message");
 const locationOptions = document.querySelector("#location-options");
 const currentWeather = document.querySelector("#current-weather");
+const forecastSection = document.querySelector("#forecast-section");
+const forecastCards = document.querySelector("#forecast-cards");
 
 const weatherDescriptions = {
   0: { description: "Despejado", icon: "☀️" },
@@ -73,6 +75,59 @@ function renderCurrentWeather(location, data) {
   currentWeather.hidden = false;
 }
 
+function formatForecastDate(dateValue) {
+  const [year, month, day] = dateValue.split("-").map(Number);
+  // daily.time contiene fechas del día local solicitado; se formatea en UTC para preservar ese día.
+  const date = new Date(Date.UTC(year, month - 1, day, 12));
+
+  return new Intl.DateTimeFormat("es", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function renderForecast(daily) {
+  const forecastDays = daily.time.slice(0, 5).map((date, index) => ({
+    date,
+    maximum: daily.temperature_2m_max[index],
+    minimum: daily.temperature_2m_min[index],
+    weatherCode: daily.weather_code[index],
+  }));
+
+  forecastCards.replaceChildren();
+
+  for (const day of forecastDays) {
+    const condition = getWeatherDescription(day.weatherCode);
+    const card = document.createElement("article");
+    const date = document.createElement("p");
+    const icon = document.createElement("span");
+    const description = document.createElement("p");
+    const temperatures = document.createElement("p");
+    const maximum = document.createElement("strong");
+    const minimum = document.createElement("span");
+
+    card.className = "forecast-day";
+    date.className = "forecast-date";
+    date.textContent = formatForecastDate(day.date);
+    icon.className = "forecast-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = condition.icon;
+    description.className = "forecast-condition";
+    description.textContent = condition.description;
+    temperatures.className = "forecast-temperatures";
+    maximum.textContent = `${Math.round(day.maximum)}°`;
+    minimum.textContent = `${Math.round(day.minimum)}°`;
+    temperatures.append(maximum, minimum);
+
+    card.append(date, icon, description, temperatures);
+    forecastCards.append(card);
+  }
+
+  forecastSection.hidden = forecastDays.length === 0;
+}
+
 async function selectLocation(location) {
   clearLocations();
   setMessage(`Consultando el clima de ${location.name}...`);
@@ -80,11 +135,18 @@ async function selectLocation(location) {
   try {
     const weather = await fetchWeather(location.latitude, location.longitude, location.timezone || "auto");
 
-    if (!weather.current) {
-      throw new Error("La respuesta no incluye las condiciones actuales.");
+    if (
+      !weather.current ||
+      !weather.daily?.time ||
+      !weather.daily.temperature_2m_max ||
+      !weather.daily.temperature_2m_min ||
+      !weather.daily.weather_code
+    ) {
+      throw new Error("La respuesta no incluye los datos meteorológicos actuales y diarios esperados.");
     }
 
     renderCurrentWeather(location, weather);
+    renderForecast(weather.daily);
     setMessage("");
   } catch (error) {
     console.error("No se pudo consultar el clima:", error);
@@ -162,6 +224,9 @@ async function loadInitialWeather() {
     );
 
     renderCurrentWeather(QUETZALTENANGO, weather);
+    if (weather.daily) {
+      renderForecast(weather.daily);
+    }
   } catch (error) {
     console.error("No se pudo consultar el clima inicial:", error);
     setMessage("No se pudo cargar el clima inicial. Comprueba tu conexión e inténtalo de nuevo.");

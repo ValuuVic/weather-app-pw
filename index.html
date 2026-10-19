@@ -67,6 +67,17 @@
         <p id="weather-updated" class="weather-updated"></p>
       </section>
 
+      <section id="forecast-section" class="forecast-section" aria-labelledby="forecast-title" hidden>
+        <div class="forecast-heading">
+          <div>
+            <p class="eyebrow">PRÓXIMOS DÍAS</p>
+            <h2 id="forecast-title">Pronóstico de 5 días</h2>
+          </div>
+          <span class="forecast-note">Máximas y mínimas</span>
+        </div>
+        <div id="forecast-cards" class="forecast-grid" aria-live="polite"></div>
+      </section>
+
       <footer class="page-footer">Datos meteorológicos de Open-Meteo</footer>
     </main>
   </body>

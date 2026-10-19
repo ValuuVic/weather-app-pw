@@ -229,6 +229,95 @@ h1 {
   box-shadow: 0 20px 55px rgba(31, 71, 117, 0.09);
 }
 
+.forecast-section {
+  max-width: 760px;
+  margin: 2.1rem auto 0;
+}
+
+.forecast-section[hidden] {
+  display: none;
+}
+
+.forecast-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.forecast-heading .eyebrow {
+  margin-bottom: 0.35rem;
+}
+
+.forecast-heading h2 {
+  margin: 0;
+  color: #173353;
+  font-size: 1.3rem;
+  letter-spacing: -0.03em;
+}
+
+.forecast-note {
+  padding-bottom: 0.15rem;
+  color: #8291a5;
+  font-size: 0.8rem;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.forecast-day {
+  display: flex;
+  min-width: 0;
+  min-height: 172px;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0.65rem;
+  border: 1px solid #e4ebf3;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 24px rgba(31, 71, 117, 0.045);
+  text-align: center;
+}
+
+.forecast-date {
+  margin: 0 0 0.75rem;
+  color: #52677f;
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-transform: capitalize;
+}
+
+.forecast-icon {
+  margin-bottom: 0.45rem;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.forecast-condition {
+  min-height: 2.1em;
+  margin: 0 0 0.75rem;
+  color: #8291a5;
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.forecast-temperatures {
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  margin: auto 0 0;
+  color: #91a0b1;
+  font-size: 0.86rem;
+}
+
+.forecast-temperatures strong {
+  color: #203b5a;
+}
+
 .weather-main {
   justify-content: space-between;
   gap: 2rem;
@@ -365,6 +454,15 @@ h1 {
 
   .weather-card {
     border-radius: 20px;
+  }
+
+  .forecast-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .forecast-day {
+    min-height: 158px;
   }
 
   .weather-main {
