@@ -3,16 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Consulta del clima con datos de Open-Meteo." />
+    <meta name="description" content="Consulta el clima actual de ciudades del mundo con Weather App." />
     <title>Weather App</title>
     <link rel="stylesheet" href="css/styles.css" />
     <script src="js/api.js" defer></script>
     <script src="js/app.js" defer></script>
   </head>
   <body>
-    <main>
-      <h1>Weather App</h1>
-      <p>La consulta inicial del clima de Quetzaltenango se registra en la consola del navegador.</p>
+    <main class="app-shell">
+      <header class="site-header">
+        <a class="brand" href="#inicio" aria-label="Weather App, inicio">
+          <span class="brand-icon" aria-hidden="true">☀️</span>
+          <span>Weather <strong>App</strong></span>
+        </a>
+        <span class="header-note">El clima del mundo, de un vistazo</span>
+      </header>
+
+      <section class="intro" id="inicio" aria-labelledby="page-title">
+        <p class="eyebrow">PRONÓSTICO LOCAL</p>
+        <h1 id="page-title">¿Qué clima hace hoy?</h1>
+        <p class="intro-copy">Busca una ciudad para consultar sus condiciones actuales.</p>
+      </section>
+
+      <section class="search-panel" aria-label="Buscar ciudad">
+        <form id="search-form" class="search-form">
+          <label class="visually-hidden" for="city-input">Nombre de la ciudad</label>
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="city-input" name="city" type="search" placeholder="Escribe una ciudad..." autocomplete="off" />
+          <button type="submit">Buscar <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="search-hint">Por ejemplo: Quetzaltenango, Guatemala</p>
+        <div id="search-message" class="search-message" role="status" aria-live="polite"></div>
+        <div id="location-options" class="location-options" aria-label="Elige una ubicación" hidden></div>
+      </section>
+
+      <section id="current-weather" class="weather-card" aria-labelledby="weather-city" hidden>
+        <div class="weather-main">
+          <div>
+            <p class="eyebrow card-eyebrow">CLIMA ACTUAL</p>
+            <h2 id="weather-city">Quetzaltenango</h2>
+            <p id="weather-location" class="weather-location">Guatemala</p>
+          </div>
+          <div class="temperature-block">
+            <span id="weather-icon" class="weather-icon" aria-hidden="true">🌤️</span>
+            <p id="weather-temperature" class="temperature">--°</p>
+            <p id="weather-description" class="weather-description">Cargando condiciones...</p>
+          </div>
+        </div>
+        <div class="weather-details" aria-label="Detalles meteorológicos">
+          <article class="detail-item">
+            <span class="detail-icon" aria-hidden="true">🌡️</span>
+            <div><p class="detail-label">Sensación térmica</p><p id="weather-apparent" class="detail-value">--°C</p></div>
+          </article>
+          <article class="detail-item">
+            <span class="detail-icon" aria-hidden="true">💧</span>
+            <div><p class="detail-label">Humedad</p><p id="weather-humidity" class="detail-value">--%</p></div>
+          </article>
+          <article class="detail-item">
+            <span class="detail-icon" aria-hidden="true">💨</span>
+            <div><p class="detail-label">Viento</p><p id="weather-wind" class="detail-value">-- km/h</p></div>
+          </article>
+        </div>
+        <p id="weather-updated" class="weather-updated"></p>
+      </section>
+
+      <footer class="page-footer">Datos meteorológicos de Open-Meteo</footer>
     </main>
   </body>
 </html>
